@@ -1,1 +1,3 @@
-export class PersonaJuridica extends Cliente {}
+export class PersonaJuridica extends Cliente {
+    
+}
