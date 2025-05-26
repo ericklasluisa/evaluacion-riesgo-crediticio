@@ -13,5 +13,6 @@ import { PersonaNatural } from './entities/personaNatural.entity';
   ],
   controllers: [ClienteController],
   providers: [ClienteService],
+  exports: [ClienteService],
 })
 export class ClienteModule {}
