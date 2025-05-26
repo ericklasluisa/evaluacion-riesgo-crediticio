@@ -30,7 +30,7 @@ export class EvaluacionService {
       throw new NotFoundException(`Cliente con ID ${id} no encontrado`);
     }
 
-    // Seleccionar el evaluador adecuado según el perfil del cliente
+    // Seleccionar el evaluador del perfil del cliente
     let resultado: ResultadoEvaluacion;
 
     if (this.evaluadorRiesgoAlto.aplica(cliente)) {
