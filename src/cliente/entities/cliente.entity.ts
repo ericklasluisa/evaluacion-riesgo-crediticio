@@ -2,8 +2,6 @@ import { Deuda } from 'src/deuda/entities/deuda.entity';
 import {
   Column,
   Entity,
-  JoinColumn,
-  ManyToOne,
   PrimaryGeneratedColumn,
   TableInheritance,
   OneToMany,
@@ -27,13 +25,15 @@ export abstract class Cliente {
   @OneToMany(() => Deuda, (deuda) => deuda.cliente)
   deudasActuales: Deuda[];
 
+  getMontoDeudas(): number {
+    return this.deudasActuales.reduce((total, deuda) => total + deuda.monto, 0);
+  }
+
+  // Métodos abstractos que deben ser implementados por las subclases
   getIngresoReferencial(): number {
     throw new Error('Método debe ser implementado por la subclase');
   }
   esAptoParaCredito(): boolean {
     throw new Error('Método debe ser implementado por la subclase');
-  }
-  getMontoDeudas(): number {
-    return this.deudasActuales.reduce((total, deuda) => total + deuda.monto, 0);
   }
 }
