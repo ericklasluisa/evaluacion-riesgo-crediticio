@@ -13,7 +13,7 @@ export class PersonaJuridica extends Cliente {
     return this.ingresoAnual;
   }
 
-  override esAptoParaCredito(): string {
+  override esAptoParaCredito(): number {
     let puntaje = 100;
 
     if (this.puntajeCredito < 650) {
@@ -28,10 +28,6 @@ export class PersonaJuridica extends Cliente {
       puntaje -= 15;
     }
 
-    return puntaje >= 80
-      ? 'riesgo bajo'
-      : puntaje >= 60
-        ? 'riesgo medio'
-        : 'riesgo alto';
+    return puntaje;
   }
 }

@@ -13,7 +13,7 @@ export class PersonaNatural extends Cliente {
     return this.ingresoMensual;
   }
 
-  override esAptoParaCredito(): string {
+  override esAptoParaCredito(): number {
     let puntaje = 100;
     this.puntajeCredito < 650 ? (puntaje -= 30) : puntaje;
     this.getMontoDeudas() > this.ingresoMensual * 0.4
@@ -24,6 +24,6 @@ export class PersonaNatural extends Cliente {
       ? (puntaje -= 10)
       : puntaje;
 
-    return puntaje >= 80 ? 'bajo' : puntaje >= 60 ? 'medio' : 'alto';
+    return puntaje;
   }
 }
