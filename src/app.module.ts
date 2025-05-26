@@ -5,7 +5,6 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClienteModule } from './cliente/cliente.module';
 import { DeudaModule } from './deuda/deuda.module';
-import { PersonaNaturalModule } from './persona-natural/persona-natural.module';
 import { EvaluadorRiesgoModule } from './evaluador-riesgo/evaluador-riesgo.module';
 
 @Module({
