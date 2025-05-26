@@ -33,7 +33,7 @@ export abstract class Cliente {
   getIngresoReferencial(): number {
     throw new Error('Método debe ser implementado por la subclase');
   }
-  esAptoParaCredito(): boolean {
+  esAptoParaCredito(): string {
     throw new Error('Método debe ser implementado por la subclase');
   }
 }
