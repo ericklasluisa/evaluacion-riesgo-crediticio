@@ -12,28 +12,33 @@ import {
 export abstract class Cliente {
   @PrimaryGeneratedColumn({ name: 'id_cliente' })
   id: number;
+
   @Column()
   nombre: string;
+
   @Column()
   puntajeCredito: number;
+
   @Column()
   montoSolicitado: number;
+
   @Column()
   plazoEnMeses: number;
 
-  //Relaciones
+  // Relaciones
   @OneToMany(() => Deuda, (deuda) => deuda.cliente)
   deudasActuales: Deuda[];
 
+  // Método para obtener el monto total de deudas
   getMontoDeudas(): number {
+    if (!this.deudasActuales || this.deudasActuales.length === 0) {
+      return 0;
+    }
     return this.deudasActuales.reduce((total, deuda) => total + deuda.monto, 0);
   }
 
   // Métodos abstractos que deben ser implementados por las subclases
-  getIngresoReferencial(): number {
-    throw new Error('Método debe ser implementado por la subclase');
-  }
-  esAptoParaCredito(): number {
-    throw new Error('Método debe ser implementado por la subclase');
-  }
+  abstract getIngresoReferencial(): number;
+
+  abstract esAptoParaCredito(): boolean;
 }

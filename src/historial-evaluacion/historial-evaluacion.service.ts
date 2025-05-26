@@ -1,26 +1,90 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateHistorialEvaluacionDto } from './dto/create-historial-evaluacion.dto';
 import { UpdateHistorialEvaluacionDto } from './dto/update-historial-evaluacion.dto';
+import { HistorialEvaluacion } from './entities/historial-evaluacion.entity';
+import { Cliente } from 'src/cliente/entities/cliente.entity';
 
 @Injectable()
 export class HistorialEvaluacionService {
-  create(createHistorialEvaluacionDto: CreateHistorialEvaluacionDto) {
-    return 'This action adds a new historialEvaluacion';
+  constructor(
+    @InjectRepository(HistorialEvaluacion)
+    private historialRepository: Repository<HistorialEvaluacion>,
+    @InjectRepository(Cliente)
+    private clienteRepository: Repository<Cliente>,
+  ) {}
+
+  async create(createHistorialEvaluacionDto: CreateHistorialEvaluacionDto) {
+    const { clienteId, ...historialData } = createHistorialEvaluacionDto;
+
+    const cliente = await this.clienteRepository.findOne({
+      where: { id: clienteId },
+    });
+
+    if (!cliente) {
+      throw new NotFoundException(`Cliente con ID ${clienteId} no encontrado`);
+    }
+
+    const historial = this.historialRepository.create({
+      ...historialData,
+      fechaConsulta: new Date(),
+      cliente,
+    });
+
+    return await this.historialRepository.save(historial);
   }
 
-  findAll() {
-    return `This action returns all historialEvaluacion`;
+  async findAll() {
+    return await this.historialRepository.find({
+      relations: ['cliente'],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} historialEvaluacion`;
+  async findOne(id: number) {
+    const historial = await this.historialRepository.findOne({
+      where: { id },
+      relations: ['cliente'],
+    });
+
+    if (!historial) {
+      throw new NotFoundException(
+        `Historial de evaluación con ID ${id} no encontrado`,
+      );
+    }
+
+    return historial;
   }
 
-  update(id: number, updateHistorialEvaluacionDto: UpdateHistorialEvaluacionDto) {
-    return `This action updates a #${id} historialEvaluacion`;
+  async update(
+    id: number,
+    updateHistorialEvaluacionDto: UpdateHistorialEvaluacionDto,
+  ) {
+    const historial = await this.findOne(id);
+
+    const { clienteId, ...historialData } = updateHistorialEvaluacionDto;
+
+    if (clienteId) {
+      const cliente = await this.clienteRepository.findOne({
+        where: { id: clienteId },
+      });
+
+      if (!cliente) {
+        throw new NotFoundException(
+          `Cliente con ID ${clienteId} no encontrado`,
+        );
+      }
+
+      historial.cliente = cliente;
+    }
+
+    Object.assign(historial, historialData);
+
+    return await this.historialRepository.save(historial);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} historialEvaluacion`;
+  async remove(id: number) {
+    const historial = await this.findOne(id);
+    return await this.historialRepository.remove(historial);
   }
 }

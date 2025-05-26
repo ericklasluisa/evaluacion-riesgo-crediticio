@@ -1,4 +1,4 @@
-import { IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsArray, IsOptional, IsString } from 'class-validator';
 import { CreateDeudaDto } from 'src/deuda/dto/create-deuda.dto';
 
 export class CreateEvaluadorRiesgoDto {
@@ -8,7 +8,7 @@ export class CreateEvaluadorRiesgoDto {
   nombre: string;
   @IsNumber()
   puntajeCrediticio: number;
-  @IsObject()
+  @IsArray()
   deudasActuales: CreateDeudaDto[];
   @IsNumber()
   montoSolicitado: number;

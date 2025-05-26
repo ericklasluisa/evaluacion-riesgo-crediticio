@@ -3,8 +3,6 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { CreateEvaluadorRiesgoDto } from './dto/create-evaluador-riesgo.dto';
 import { UpdateEvaluadorRiesgoDto } from './dto/update-evaluador-riesgo.dto';
 import { EvaluadorRiesgoBajo } from './entities/evaluador-riesgo-bajo.entity';
@@ -15,7 +13,6 @@ import {
   CreatePersonaNaturalDto,
   CreatePersonaJuridicaDto,
 } from '../cliente/dto/create-cliente.dto';
-import { Cliente } from '../cliente/entities/cliente.entity';
 import { DeudaService } from '../deuda/deuda.service';
 
 @Injectable()
@@ -42,7 +39,7 @@ export class EvaluadorRiesgoService {
         for (const deudaDto of entity.deudasActuales) {
           await this.deudaService.create({
             ...deudaDto,
-            clienteId: cliente.id,
+            idCliente: cliente.id,
           });
         }
       }

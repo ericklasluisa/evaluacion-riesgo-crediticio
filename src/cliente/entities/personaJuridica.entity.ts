@@ -1,33 +1,28 @@
-import { Cliente } from 'src/cliente/entities/cliente.entity';
-import { Column } from 'typeorm';
+import { Column, ChildEntity } from 'typeorm';
+import { Cliente } from './cliente.entity';
 
+@ChildEntity()
 export class PersonaJuridica extends Cliente {
   @Column()
   antiguedadAnios: number;
+
   @Column()
   ingresoAnual: number;
+
   @Column()
   empleados: number;
 
-  override getIngresoReferencial(): number {
-    return this.ingresoAnual;
+  getIngresoReferencial(): number {
+    // Lógica para calcular ingreso referencial para persona jurídica
+    return this.ingresoAnual / 12; // Aproximación del ingreso mensual
   }
 
-  override esAptoParaCredito(): number {
-    let puntaje = 100;
+  esAptoParaCredito(): boolean {
+    // Lógica para determinar si la persona jurídica es apta para crédito
+    // Por ejemplo: si tiene suficiente tiempo en el mercado, ingresos suficientes, etc.
+    const montoDeudas = this.getMontoDeudas();
+    const capacidadPago = (this.ingresoAnual / 12) * 0.5; // 50% del promedio mensual
 
-    if (this.puntajeCredito < 650) {
-      puntaje -= 30;
-    }
-
-    if (this.getMontoDeudas() > this.getIngresoReferencial() * 0.35) {
-      puntaje -= 20;
-    }
-
-    if (this.montoSolicitado > this.getIngresoReferencial() * 0.3) {
-      puntaje -= 15;
-    }
-
-    return puntaje;
+    return montoDeudas < capacidadPago && this.antiguedadAnios >= 2;
   }
 }

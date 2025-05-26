@@ -1,29 +1,25 @@
-import { ChildEntity, Column } from 'typeorm';
+import { Column, ChildEntity } from 'typeorm';
 import { Cliente } from './cliente.entity';
 
-@ChildEntity('persona_natural')
+@ChildEntity()
 export class PersonaNatural extends Cliente {
   @Column()
   edad: number;
 
-  @Column('double')
+  @Column()
   ingresoMensual: number;
 
-  override getIngresoReferencial(): number {
+  getIngresoReferencial(): number {
+    // Lógica para calcular ingreso referencial para persona natural
     return this.ingresoMensual;
   }
 
-  override esAptoParaCredito(): number {
-    let puntaje = 100;
-    this.puntajeCredito < 650 ? (puntaje -= 30) : puntaje;
-    this.getMontoDeudas() > this.ingresoMensual * 0.4
-      ? (puntaje -= 15)
-      : puntaje;
+  esAptoParaCredito(): boolean {
+    // Lógica para determinar si la persona natural es apta para crédito
+    // Por ejemplo: si sus ingresos son suficientes y no tiene muchas deudas
+    const montoDeudas = this.getMontoDeudas();
+    const capacidadPago = this.ingresoMensual * 0.4; // 40% del ingreso mensual
 
-    this.montoSolicitado > this.ingresoMensual * 0.5
-      ? (puntaje -= 10)
-      : puntaje;
-
-    return puntaje;
+    return montoDeudas < capacidadPago && this.edad >= 18;
   }
 }

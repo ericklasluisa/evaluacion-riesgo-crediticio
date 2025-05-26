@@ -1,11 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { HistorialEvaluacionService } from './historial-evaluacion.service';
 import { CreateHistorialEvaluacionDto } from './dto/create-historial-evaluacion.dto';
 import { UpdateHistorialEvaluacionDto } from './dto/update-historial-evaluacion.dto';
 
 @Controller('historial-evaluacion')
 export class HistorialEvaluacionController {
-  constructor(private readonly historialEvaluacionService: HistorialEvaluacionService) {}
+  constructor(
+    private readonly historialEvaluacionService: HistorialEvaluacionService,
+  ) {}
 
   @Post()
   create(@Body() createHistorialEvaluacionDto: CreateHistorialEvaluacionDto) {
@@ -23,8 +33,14 @@ export class HistorialEvaluacionController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateHistorialEvaluacionDto: UpdateHistorialEvaluacionDto) {
-    return this.historialEvaluacionService.update(+id, updateHistorialEvaluacionDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateHistorialEvaluacionDto: UpdateHistorialEvaluacionDto,
+  ) {
+    return this.historialEvaluacionService.update(
+      +id,
+      updateHistorialEvaluacionDto,
+    );
   }
 
   @Delete(':id')

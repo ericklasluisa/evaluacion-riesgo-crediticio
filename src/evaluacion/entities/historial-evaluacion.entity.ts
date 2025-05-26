@@ -1,15 +1,15 @@
-import { Cliente } from 'src/cliente/entities/cliente.entity';
 import {
-  Column,
   Entity,
-  JoinColumn,
-  ManyToOne,
+  Column,
   PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { Cliente } from 'src/cliente/entities/cliente.entity';
 
-@Entity()
+@Entity('historial_evaluaciones')
 export class HistorialEvaluacion {
-  @PrimaryGeneratedColumn({ name: 'id_historial_evaluacion' })
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
@@ -30,8 +30,8 @@ export class HistorialEvaluacion {
   @Column()
   aprobado: boolean;
 
-  @Column()
-  fechaConsulta: Date = new Date();
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  fechaConsulta: Date;
 
   @ManyToOne(() => Cliente)
   @JoinColumn({ name: 'cliente_id' })

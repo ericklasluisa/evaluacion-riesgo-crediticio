@@ -1,10 +1,9 @@
 import { Cliente } from 'src/cliente/entities/cliente.entity';
 import {
-  Column,
   Entity,
-  JoinColumn,
-  ManyToOne,
   PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
   CreateDateColumn,
 } from 'typeorm';
 
@@ -13,28 +12,27 @@ export class ResultadoEvaluacion {
   @PrimaryGeneratedColumn({ name: 'id_resultado' })
   id: number;
 
+  @Column({ name: 'puntajeObtenido' })
+  puntajeFinal: number;
+
   @Column()
   nivelRiesgo: string;
 
   @Column()
-  puntajeObtenido: number;
+  aprobado: boolean;
 
-  @Column()
-  resultadoAprobado: boolean;
-
-  @Column()
-  montoAprobado: number;
+  @Column({ type: 'decimal', precision: 5, scale: 2 })
+  tasaInteres: number;
 
   @Column()
   plazoAprobado: number;
 
-  @Column({ nullable: true })
-  tasaInteres: number;
+  @Column()
+  mensaje: string;
 
   @CreateDateColumn()
   fechaEvaluacion: Date;
 
-  @ManyToOne(() => Cliente)
-  @JoinColumn({ name: 'cliente_id' })
+  @ManyToOne(() => Cliente, { onDelete: 'CASCADE' })
   cliente: Cliente;
 }
