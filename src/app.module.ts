@@ -6,7 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClienteModule } from './cliente/cliente.module';
 import { DeudaModule } from './deuda/deuda.module';
 import { PersonaNaturalModule } from './persona-natural/persona-natural.module';
-import { PersonaJuridicaModule } from './persona-juridica/persona-juridica.module';
+import { EvaluadorRiesgoModule } from './evaluador-riesgo/evaluador-riesgo.module';
 
 @Module({
   imports: [
@@ -22,8 +22,7 @@ import { PersonaJuridicaModule } from './persona-juridica/persona-juridica.modul
     }),
     ClienteModule,
     DeudaModule,
-    PersonaNaturalModule,
-    PersonaJuridicaModule,
+    EvaluadorRiesgoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
