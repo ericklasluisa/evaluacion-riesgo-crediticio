@@ -45,6 +45,8 @@ export class EvaluacionService {
     resultado.cliente = cliente;
     resultado.fechaEvaluacion = new Date();
 
+    console.log(resultado);
+
     // Guardar el resultado de la evaluación
     return await this.resultadoRepository.save(resultado);
   }
